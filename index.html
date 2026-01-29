@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>XAU Terminal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main class="terminal" role="main">
+    <header class="row header">
+      <div class="brand">XAU/MMK TERMINAL</div>
+      <div class="status" id="status">STATUS: BOOT</div>
+      <div class="clock" id="clock">--:--:--</div>
+    </header>
+
+    <section class="row price">
+      <div class="label">XAU/USD</div>
+      <div class="value" id="xauUsd">--</div>
+      <div class="meta" id="xauSgd">XAU/SGD: --</div>
+      <div class="meta" id="lastUpdated">Last update: --</div>
+      <button class="refresh" id="refreshBtn" type="button">REFRESH (R)</button>
+    </section>
+
+    <section class="row input">
+      <label for="rateInput">USD→MMK RATE (SESSION)</label>
+      <input id="rateInput" type="number" step="0.01" inputmode="decimal" placeholder="Enter rate" />
+      <div class="input-actions">
+        <button class="refresh" id="binanceBtn" type="button">USE BINANCE P2P</button>
+        <div class="meta" id="binanceStatus">Binance rate: --</div>
+      </div>
+      <div class="hint" id="rateHint">Rate required for MMK conversion.</div>
+    </section>
+
+    <section class="row conversion">
+      <div class="label">GOLD/MMK (KYAT-THA)</div>
+      <div class="value" id="xauMmk">--</div>
+      <div class="meta" id="perKyatThaLabel">MMK per 1 kyat-tha</div>
+      <div class="meta" id="ratioLine">1 troy oz = 1.873 kyat-tha (31.1035g / 16.606g)</div>
+      <div class="calc" id="calcLine">MMK/KYAT-THA = (XAU/USD × RATE) ÷ 1.873</div>
+    </section>
+
+    <section class="row log hidden" aria-hidden="true">
+      <div class="label">LOG</div>
+      <div class="log-body" id="logBody"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
