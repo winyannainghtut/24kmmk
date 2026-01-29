@@ -4,7 +4,7 @@ A terminal-style web dashboard that shows:
 - XAU price in USD (from gold-api)
 - XAU price in SGD (from ER-API)
 - Gold price in MMK per kyat-tha (1 troy oz = 31.1035 g, 1 kyat-tha = 16.606 g)
-- USD→MMK rate entered per session, with optional Binance P2P fill
+- USD→MMK rate entered per session
 
 ## Live Site
 
@@ -18,9 +18,7 @@ Open `index.html` in a browser.
 
 - Gold price: https://api.gold-api.com/price/XAU
 - FX (SGD base): https://open.er-api.com/v6/latest/SGD
-- Binance P2P (optional rate fill): https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search
 
 ## Notes
 
-- Binance P2P may be blocked by CORS on GitHub Pages. If the button fails, you can still enter the rate manually.
 - Rates are session-only and not persisted.
