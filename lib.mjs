@@ -41,10 +41,3 @@ export function computeXauSgd(usdPerOz, sgdPerUsdValue) {
   if (!Number.isFinite(usdPerOz) || !Number.isFinite(sgdPerUsdValue)) return null;
   return usdPerOz * sgdPerUsdValue;
 }
-
-export function parseBinanceP2PPrice(payload) {
-  const priceText = payload?.data?.[0]?.adv?.price;
-  const price = Number(priceText);
-  if (!Number.isFinite(price)) return null;
-  return price;
-}

@@ -7,8 +7,6 @@
   lastUpdated: document.getElementById('lastUpdated'),
   rateInput: document.getElementById('rateInput'),
   rateHint: document.getElementById('rateHint'),
-  binanceBtn: document.getElementById('binanceBtn'),
-  binanceStatus: document.getElementById('binanceStatus'),
   logBody: document.getElementById('logBody'),
   refreshBtn: document.getElementById('refreshBtn'),
   ratioLine: document.getElementById('ratioLine'),
@@ -56,13 +54,6 @@ function computeXauSgd(usdPerOz, sgdPerUsdValue) {
   return usdPerOz * sgdPerUsdValue;
 }
 
-function parseBinanceP2PPrice(payload) {
-  const priceText = payload?.data?.[0]?.adv?.price;
-  const price = Number(priceText);
-  if (!Number.isFinite(price)) return null;
-  return price;
-}
-
 function logLine(message) {
   if (!els.logBody) return;
   const time = new Date().toLocaleTimeString();
@@ -101,12 +92,6 @@ function updateSgdDisplay() {
   }
   const xauSgd = computeXauSgd(xauUsd, sgdPerUsdRate);
   els.xauSgd.textContent = `XAU/SGD: ${formatNumber(xauSgd, 2)} SGD`;
-}
-
-function setBinanceStatus(text, isError = false) {
-  if (!els.binanceStatus) return;
-  els.binanceStatus.textContent = text;
-  els.binanceStatus.classList.toggle('error', isError);
 }
 
 async function fetchXau() {
@@ -149,41 +134,6 @@ async function fetchSgdRate() {
   }
 }
 
-async function fetchBinanceRate() {
-  if (!els.binanceBtn) return;
-  setBinanceStatus('Binance rate: fetching...');
-  els.binanceBtn.disabled = true;
-  try {
-    const res = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        page: 1,
-        rows: 10,
-        asset: 'USDT',
-        fiat: 'MMK',
-        tradeType: 'SELL',
-        payTypes: [],
-      }),
-    });
-    if (!res.ok) throw new Error(`BINANCE HTTP ${res.status}`);
-    const data = await res.json();
-    const price = parseBinanceP2PPrice(data);
-    if (!price) throw new Error('No price found');
-    els.rateInput.value = price.toFixed(2);
-    updateConversion();
-    setBinanceStatus(`Binance rate: ${formatNumber(price, 2)} MMK/USDT`);
-    logLine(`Binance P2P rate: ${formatNumber(price, 2)} MMK/USDT`);
-  } catch (err) {
-    setBinanceStatus(`Binance rate: error (${err.message})`, true);
-    logLine(`Binance error: ${err.message}`);
-  } finally {
-    els.binanceBtn.disabled = false;
-  }
-}
-
 function updateRatioLine() {
   const kyatThaPerOz = troyOzToKyatTha(1);
   const ratio = formatNumber(kyatThaPerOz, 3);
@@ -194,7 +144,6 @@ function updateRatioLine() {
 
 els.rateInput.addEventListener('input', updateConversion);
 els.refreshBtn.addEventListener('click', fetchXau);
-if (els.binanceBtn) els.binanceBtn.addEventListener('click', fetchBinanceRate);
 
 document.addEventListener('keydown', (e) => {
   if (e.key.toLowerCase() === 'r') fetchXau();

@@ -8,7 +8,6 @@ import {
   troyOzToKyatTha,
   sgdPerUsd,
   computeXauSgd,
-  parseBinanceP2PPrice,
 } from '../lib.mjs';
 
 test('formatNumber adds thousands separators', () => {
@@ -40,16 +39,4 @@ test('sgdPerUsd converts usd per sgd to sgd per usd', () => {
 test('computeXauSgd converts XAU price to SGD', () => {
   const sgd = computeXauSgd(2000, 1.351351);
   assert.equal(sgd.toFixed(2), '2702.70');
-});
-
-test('parseBinanceP2PPrice reads the first adv price', () => {
-  const payload = {
-    data: [{ adv: { price: '3500.50' } }],
-  };
-  assert.equal(parseBinanceP2PPrice(payload), 3500.5);
-});
-
-test('parseBinanceP2PPrice returns null for missing data', () => {
-  assert.equal(parseBinanceP2PPrice({ data: [] }), null);
-  assert.equal(parseBinanceP2PPrice({}), null);
 });
